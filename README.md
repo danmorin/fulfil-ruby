@@ -1,6 +1,6 @@
 # Fulfil
 
-Fulfil.io Ruby Gem
+Fulfil.io Ruby Gem.  Fulfil.io API documentation available here: https://developers.fulfil.io/
 
 ## Installation
 
