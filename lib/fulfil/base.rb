@@ -26,6 +26,12 @@ module Fulfil
         raise ArgumentError, 'Please provide a filter' if filter.empty?
         request.find({:filter => filter, :page => page, :per_page => per_page})
       end
+      
+      def search_read(data={},page=1,per_page=10)
+        data["limit"] = per_page
+        data["offset"] = (page-1) * per_page
+        request.search_read(data)
+      end
 
       # TODO
       #def create(data)

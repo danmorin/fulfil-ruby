@@ -4,4 +4,5 @@ module Fulfil
   class AuthenticationError < StandardError ; end
   class UserError < StandardError ; end
   class HostResolutionError < StandardError ; end
+  class ServerError < StandardError ; end
 end

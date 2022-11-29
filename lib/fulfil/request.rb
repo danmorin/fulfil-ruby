@@ -25,6 +25,10 @@ module Fulfil
     def find(data)
       request :get, data
     end
+    
+    def search_read(data)
+      request :put, data, '/search_read'      
+    end
 
     # TODO
     #def create(data)
@@ -50,6 +54,11 @@ module Fulfil
                   http.headers['x-api-key'] = @options[:api_key]
                   http.headers['Accept'] = 'application/json'
                 end
+              when :put
+                response = Curl.put(final_url, data.to_json) do |http|
+                  http.headers['x-api-key'] = @options[:api_key]
+                  http.headers['Accept'] = 'application/json'
+                end
           end
         rescue Curl::Err::HostResolutionError
           raise Fulfil::HostResolutionError, "Invalid Subdomain"
@@ -58,8 +67,12 @@ module Fulfil
     end
 
     def parse_response response
+        json = JSON.parse(response.body_str)
+        
         if response.response_code == 401
           raise Fulfil::UnauthorizedError, "Unauthorized access"
+        elsif response.response_code == 500
+          raise Fulfil::ServerError, json["description"]
         else
           create_response response
         end
@@ -71,8 +84,9 @@ module Fulfil
       if json.is_a?(Array)
         result = json.map {|result| Fulfil::Base.new(result)}
       else
+        puts json
         result = Fulfil::Base.new(json)
-        if result.type == "UserError"
+        if json["type"] && json["type"] == "UserError"
           raise Fulfil::UserError, result.message
         end
       end

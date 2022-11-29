@@ -1,6 +1,10 @@
 # Basic authentication
 require "fulfil/version"
+require "fulfil/contact"
 require "fulfil/product"
+require "fulfil/product_supplier"
+require "fulfil/purchase_order_line"
+require "fulfil/sale_line"
 
 module Fulfil
   class << self
