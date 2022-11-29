@@ -84,7 +84,6 @@ module Fulfil
       if json.is_a?(Array)
         result = json.map {|result| Fulfil::Base.new(result)}
       else
-        puts json
         result = Fulfil::Base.new(json)
         if json["type"] && json["type"] == "UserError"
           raise Fulfil::UserError, result.message
